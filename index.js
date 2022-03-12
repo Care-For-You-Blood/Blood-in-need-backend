@@ -1,23 +1,23 @@
-const { ApolloServer } = require("apollo-server");
-const express = require("express");
-const mongoose = require("mongoose");
-const typeDefs = require("./Schema/schema");
-const resolvers = require("./Resolvers/resolver");
-const jwt = require("jsonwebtoken");
-const cors = require("cors");
+const { ApolloServer } = require('apollo-server');
+const express = require('express');
+const mongoose = require('mongoose');
+const typeDefs = require('./Schema/schema');
+const resolvers = require('./Resolvers/resolver');
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
 const app = express();
 
 app.use(cors());
-require("dotenv").config();
+require('dotenv').config();
 // DATABASE CONNECTION
 mongoose
   .connect(
-    "mongodb+srv://Abhishek:Abhishek1234@nodejsproject.efica.mongodb.net/project?retryWrites=true&w=majority",
+    'mongodb+srv://Abhishek:Abhi1234@nodejsproject.efica.mongodb.net/project?retryWrites=true&w=majority',
     { useNewUrlParser: true },
     { useUnifiedTopology: true }
   )
   .then((res) => {
-    console.log("Database Connected");
+    console.log('Database Connected');
   });
 
 const server = new ApolloServer({
@@ -25,23 +25,23 @@ const server = new ApolloServer({
   resolvers,
   introspection: true,
   playground: true,
-  context: ({ req }) => {
+  context: ({ req }) => {   
     // get the user token from the headers
-    const token = req.headers.authorization || "";
-    console.log("token", token);
-    if (token === "") {
-      console.log("exited here");
+    const token = req.headers.authorization || '';
+    console.log('token', token);
+    if (token === '') {
+      console.log('exited here');
       return;
     }
     // try to retrieve a user with the token
-    console.log("reached here");
+    console.log('reached here');
     let user = {};
     try {
       user = jwt.verify(token, process.env.SECRET || process.env.APP_SECRET);
     } catch (e) {
       console.log(e);
     }
-    console.log("user", user);
+    console.log('user', user);
 
     // optionally block the user
     // we could also check user roles/permissions here
